@@ -38,7 +38,3 @@ exports.register = async (req, res) => {
     const token = jwt.sign({ id: newUser._id }, AUTH_SECRET, { expiresIn: '1h' });
     res.status(201).json({'msg' : 'success', token });
 }
-  
-exports.logout = async (req, res) => {
-    
-}
