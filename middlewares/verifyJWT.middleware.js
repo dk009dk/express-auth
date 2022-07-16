@@ -4,6 +4,9 @@ const AUTH_SECRET = process.env.AUTH_SECRET;
 async function verifyJWT(req, res, next) {
     // Get token from header
     const barearToken = req.headers['authorization'];
+    if(typeof barearToken === 'undefined') {
+        return res.status(401).json({ msg: 'No token provided.' });
+    }
     const token = barearToken.split(' ')[1];
 
     // Check if token exists
