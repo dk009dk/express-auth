@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user.model');
+const { check, validationResult } = require('express-validator');
 const AUTH_SECRET = process.env.AUTH_SECRET;
 
 exports.getUser = async (req, res) => {
@@ -9,6 +10,10 @@ exports.getUser = async (req, res) => {
 }
 
 exports.login = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
     const { email, password } = req.query;
     const user = await User.findOne({ email });
     if (!user) {
@@ -23,6 +28,10 @@ exports.login = async (req, res) => {
 }
 
 exports.register = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
     const { name, email, password } = req.query;
     const user = await User.findOne({ email });
     if (user) {
